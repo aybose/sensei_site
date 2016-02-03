@@ -6,9 +6,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Wildflower Teacher Portal</title>
-        <link href="css/style.min.css" rel="stylesheet">
-
-        <link href="http://aybose.github.io/prnet-site" rel="canonical">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}" />
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
+        <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
     </head>
 
     
@@ -19,7 +19,7 @@
             <header class="main-header" id="mainHeader">
                 <nav class="main-menu" id="nav">
                     <ul>
-                        <li style="width:10%"><a href="home.html"><img src="img/aster.jpg"></a></li>
+                        <li style="width:10%"><a href="home.html"><img src="{{ url_for('static', filename='img/aster.jpg') }}"></a></li>
                         <li class="selected" style="padding:12px;margin-top:12px;"><a href="home.html">home</a></li>
                         <li class="first" style="padding:12px;margin-top:12px;"><a href="#">students</a></li>
 <li style="padding:12px;margin-top:12px;"><a href="#">teachers</a></li>
@@ -33,7 +33,7 @@
                 </nav>
 
             </header>
-            <img id="homeImg" src="img/wavy-line.png" style="width:860px; margin-top:30px">
+            <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px">
 
 <div class="l-content" style="margin-top:100px">
         <div class="text-body text-body--purple text-body--spacer" style="width:860px">
@@ -71,7 +71,7 @@
             No students have spent any time by the <a href="#">front, right area</a> of the classroom
             <br>
             <br>
-            <form action="customize_updates.html">
+            <form action="/customize_updates">
               <input type="submit" value="customize updates" style="
                     width: 26%;
                     margin-top: 10px;
@@ -84,7 +84,7 @@
 </div>
         <!-- .container -->
         <a href="#" class="arrow" id="arrow" data-start="opacity: 0;" data-100="opacity: 1;"></a>
-        <script type="text/javascript" src="js/scripts.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/scripts.min.js')}}"></script>
     </body>
 </html>
 
