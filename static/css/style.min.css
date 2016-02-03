@@ -26,3 +26,21 @@
     height: 16px;
     background: url('http://kubyshkin.ru/samples/star-rating/star.png') 0 -16px;
 }
+input[type="password"] {
+    font-family: sans-serif;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    font-family:kim;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   font-family:kim;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   font-family:kim;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   font-family:kim;
+}
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  font-family:kim;
+}
