@@ -1,0 +1,165 @@
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "Mila",
+   "children": [
+    {
+     "name": "02/01",
+     "children": [
+      {"name": "9:00 AM", "size": 20},
+      {"name": "9:30 AM", "size": 10},
+      {"name": "10:00 AM", "size": 8},
+      {"name": "10:30 AM", "size": 7},
+      {"name": "11:00 AM", "size": 5},
+      {"name": "11:30 AM", "size": 3}
+     ]
+    },
+    {
+     "name": "02/02",
+     "children": [
+      {"name": "placeholder", "size": 51}
+     ]
+    },
+    {
+     "name": "02/03",
+     "children": [
+      {"name": "placeholder", "size": 30}
+     ]
+    },
+    {
+     "name": "02/04",
+     "children": [
+      {"name": "placeholder", "size": 27}
+     ]
+    },
+    {
+     "name": "02/05",
+     "children": [
+      {"name": "placeholder", "size": 24}
+     ]
+    },
+    {
+     "name": "02/06",
+     "children": [
+      {"name": "placeholder", "size": 22}
+     ]
+    },
+    {
+     "name": "02/07",
+     "children": [
+      {"name": "placeholder", "size": 21}
+     ]
+    },
+    {
+     "name": "02/08",
+     "children": [
+      {"name": "placeholder", "size": 15}
+     ]
+    },
+    {
+     "name": "02/09",
+     "children": [
+      {"name": "placeholder", "size": 15}
+     ]
+    },
+    {
+     "name": "02/10",
+     "children": [
+      {"name": "placeholder", "size": 12}
+     ]
+    },
+    {
+     "name": "02/11",
+     "children": [
+      {"name": "placeholder", "size": 10}
+     ]
+    },
+    {
+     "name": "02/12",
+     "children": [
+      {"name": "placeholder", "size": 9}
+     ]
+    },
+    {
+     "name": "02/13",
+     "children": [
+      {"name": "placeholder", "size": 8}
+     ]
+    },
+    {
+     "name": "02/14",
+     "children": [
+      {"name": "placeholder", "size": 7}
+     ]
+    },
+    {
+     "name": "02/15",
+     "children": [
+      {"name": "placeholder", "size": 6}
+     ]
+    },
+    {
+     "name": "02/16",
+     "children": [
+      {"name": "placeholder", "size": 5}
+     ]
+    },
+    {
+     "name": "02/17",
+     "children": [
+      {"name": "placeholder", "size": 4}
+     ]
+    },
+    {
+     "name": "02/18",
+     "children": [
+      {"name": "placeholder", "size": 3}
+     ]
+    }
+   ]
+  },
+  {
+    "name": "Penny",
+   "children": [
+    {"name": "placeholder", "size": 400}
+    ]
+  },
+  {
+    "name": "Lyra",
+   "children": [
+    {"name": "placeholder", "size": 1200}
+    ]
+  },
+  {
+    "name": "Gustav",
+   "children": [
+    {"name": "placeholder", "size": 650}
+    ]
+  },
+  {
+    "name": "Giorgio",
+   "children": [
+    {"name": "placeholder", "size": 210}
+    ]
+  },
+  {
+    "name": "Rachel",
+   "children": [
+    {"name": "placeholder", "size": 890}
+    ]
+  },
+  {
+    "name": "Leo",
+   "children": [
+    {"name": "placeholder", "size": 430}
+    ]
+  },
+  {
+    "name": "Yusuf",
+   "children": [
+    {"name": "placeholder", "size": 760}
+    ]
+  }
+ ]
+}
