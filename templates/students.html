@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wildflower Teacher Portal</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.vertical-tabs.css') }}" />
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
+        <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
+    </head>
+
+    
+    <body class="home" id="home">
+    
+        
+        <div class="container">
+            <header class="main-header" id="mainHeader">
+                <nav class="main-menu" id="nav">
+                    <ul>
+                        <li style="width:10%"><a href="/home"><img src="{{ url_for('static', filename='img/aster.jpg') }}"></a></li>
+                        <li class="first" style="padding:12px;margin-top:12px;"><a href="/students">students</a></li>
+<li style="padding:12px;margin-top:12px;"><a href="#">teachers</a></li>
+<li style="padding:12px;margin-top:12px;"><a href="#">materials</a></li>
+<li style="padding:12px;margin-top:12px;"><a href="#">classroom</a></li>
+<li style="padding:12px;margin-top:12px;"><a href="#">notes</a></li>
+<li style="padding:12px;margin-top:12px;"><a href="#">Contact</a></li>
+<li class="last" style="padding:12px;margin-top:12px;"><a href="/logout">logout</a></li>         
+                    </ul>
+                </nav>
+
+            </header>
+            <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px;margin-left:160px">
+
+<div class="l-content" style="margin-top:100px;margin-left:80px">
+        <div class="text-body text-body--purple text-body--spacer" style="width:860px">
+            <div id="tabs">
+            <div class="col-xs-2"> <!-- required for floating -->
+                <!-- Nav tabs -->
+                <ul style="margin-top:-1em">
+                  <li class="active"><a href="#summary">Summary</a></li>
+                  <li><a href="#social">Social</a></li>
+                  <li><a href="#teacher">Teacher</a></li>
+                  <li><a href="#materials">Materials</a></li>
+                  <li><a href="#classroom">Classroom</a></li>
+                  <li><a href="#notes">Notes</a></li>
+                </ul>  
+            </div>
+            <div class="col-xs-10">
+                  <div id="summary">
+                    <h3> This week: </h3>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-1" name="rating-input-1"/>
+                            <label for="rating-input-1-1" class="rating-star"></label>
+                    </span>
+                    Spent time with <a href="students?student=Taj">Taj</a> and <a href="students?student=Penny">Penny</a>
+                    <br>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-2" name="rating-input-2"/>
+                            <label for="rating-input-1-2" class="rating-star"></label>
+                    </span>
+                    Worked with <a href="#">Puzzle Words</a>, <a href="#">Sand Tray</a>, and <a href="#">Sandpaper Letters</a>
+                    <br>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-3" name="rating-input-3"/>
+                            <label for="rating-input-1-3" class="rating-star"></label>
+                    </span>
+                    Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
+                    <br>
+                    <br>
+                    <h3> Last week: </h3>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-1" name="rating-input-1"/>
+                            <label for="rating-input-1-1" class="rating-star"></label>
+                    </span>
+                    Spent time with <a href="students?student=Taj">Taj</a> and <a href="students?student=Penny">Penny</a>
+                    <br>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-2" name="rating-input-2"/>
+                            <label for="rating-input-1-2" class="rating-star"></label>
+                    </span>
+                    Worked with <a href="#">Puzzle Words</a>, <a href="#">Sand Tray</a>, and <a href="#">Sandpaper Letters</a>
+                    <br>
+                    <br>
+                    <span class="rating">
+                            <input type="radio" class="rating-input"
+                                    id="rating-input-1-3" name="rating-input-3"/>
+                            <label for="rating-input-1-3" class="rating-star"></label>
+                    </span>
+                    Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
+                    <br>
+                    <br>
+                  </div>
+                  <div id="social">
+                    {% if primary_student %}
+                    <h2> Entries for {{primary_student}} </h2>
+                    {% else %}
+                    <h2> Entries for all students </h2>
+                    {% endif %}
+                    <ul>
+                    {% for entry in entries %}
+                    <li>
+                        Date: {{entry.date}}, 
+                        From: {{ entry.school}}
+                        <h3>{{entry.primary_student}} is within {{entry.rsval}} of {{entry.secondary_student}}</h3>
+                    {% else %}
+                    <li>No entries here so far
+                    {% endfor %}
+                    </ul>
+                  </div>
+                  <div id="teacher">Teacher</div>
+                  <div id="materials">Materials</div>
+                  <div id="classroom">Classroom</div>
+                  <div id="notes">Notes</div>
+            </div>
+            </div> 
+        </div>
+</div>
+</div>
+        <!-- .container -->
+        <a href="#" class="arrow" id="arrow" data-start="opacity: 0;" data-100="opacity: 1;"></a>
+        <script type="text/javascript" src="{{url_for('static', filename='js/scripts.min.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-1.8.2.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
+        <script>
+            $('#tabs')
+            .tabs()
+            .addClass('ui-tabs-vertical ui-helper-clearfix');
+        </script>
+    </body>
+</html>
+
+
+
+
+
+

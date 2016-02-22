@@ -1,0 +1,30 @@
+<h1> SocialProximity DB: </h1>
+{% if session.logged_in %}
+<h2> Add new entry: </h2>
+<form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+  <dl>
+    <dt>Date:
+    <dd><input type=text size=30 name=date>
+    <dt>School:
+    <dd><input name=school size=30></textarea>
+    <dt>Primary student:
+    <dd><input type=text size=30 name=primary>
+    <dt>Secondary student:
+    <dd><input type=text size=30 name=secondary>
+    <dt>Rsval:
+    <dd><input type=integer size=30 name=rsval>
+    <dd><input type=submit value=Add>
+  </dl>
+</form>
+{% endif %}
+<h2> Existing entries: </h2>
+<ul>
+{% for entry in entries %}
+<li>
+	Date: {{entry.date}}, 
+	From: {{ entry.school}}
+	<h3>{{entry.primary_student}} is within {{entry.rsval}} of {{entry.secondary_student}}</h3>
+{% else %}
+<li>No entries here so far
+{% endfor %}
+</ul>
