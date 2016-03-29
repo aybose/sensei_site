@@ -84,6 +84,45 @@ def home():
 def customize_updates():
     return render_template('customize_updates.html')
 
+@app.route('/students_demo')
+def students_demo():
+    return render_template('students_demo.html')
+
+@app.route('/matrix_total')
+def matrix_total():
+    return render_template('matrix_total.html')
+
+@app.route('/matrix')
+def matrix():
+    return render_template('matrix.html')
+
+@app.route('/bar_graph')
+def bar_graph():
+    return render_template('bar_graph.html')
+
+@app.route('/real_data')
+def real_data():
+    date = request.values.get('date_change', None)
+    student = request.values.get('student_change', None)
+    check = request.values.get('check', None)
+    if check:
+        if date:
+            if student:
+                file_name = "data/" + date + "/"+ student + "_sample.csv"
+            else:
+                file_name = "data/" + date + "/0_sample.csv"
+        else:
+            file_name = "data/3-2-16/0_sample.csv"
+    else:
+        if date:
+            if student:
+                file_name = "data/" + date + "/"+ student + ".csv"
+            else:
+                file_name = "data/" + date + "/0.csv"
+        else:
+            file_name = "data/3-2-16/0.csv"
+    return render_template('real_data.html', data=url_for('static', filename=file_name))
+
 @app.route('/students')
 def filter():
     primary_student = request.values.get('student', None)
@@ -98,4 +137,5 @@ def filter():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
+    print port
     app.run(host='0.0.0.0', port=port)

@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wildflower Teacher Portal</title>
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
+        <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
+        <style>
+
+        body {
+          font: 10px sans-serif;
+        }
+
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+
+        .bar {
+          fill: steelblue;
+        }
+
+        .x.axis path {
+          display: none;
+        }
+
+        </style>
+    </head>
+    
+    <body class="home" id="home">
+    
+        
+        <div class="container">
+
+<div class="l-content" style="margin-top:100px;max-width:750px;padding:0 25px 25px;">
+        <div class="text-body text-body--purple text-body--spacer" style="width:860px">
+            <h2>Wildflower PrNet Data:</h2>
+  <form id="test" action="#" method="post">
+    Date:
+    <select id="date_change">
+      <option value="3-2-16">3-2-16</option>
+      <option value="3-4-16">3-4-16</option>
+      <option value="3-7-16">3-7-16</option>
+      <option value="3-8-16">3-8-16</option>
+      <option value="3-9-16">3-9-16</option>
+      <option value="3-9-16">3-28-16</option>
+    </select>
+    <br>
+    <br>
+    Person:
+    <select id="student_change">
+      <option value="0">Uriah</option>
+      <option value="1">Veylan</option>
+      <option value="2">Sofi</option>
+      <option value="3">Neve</option>
+      <option value="4">Elliot</option>
+      <option value="5">Riella</option>
+      <option value="6">Dash</option>
+      <option value="7">Dario</option>
+      <option value="8">Eleanor</option>
+      <option value="9">Bodhi</option>
+      <option value="10">Mary</option>
+      <option value="11">Erin</option>
+    </select>
+    <br>
+    <br>
+    <div>
+        <input type="checkbox" name="check" id="check"/> Sample every second
+    </div>
+  </form>
+  <div id="graph"></div>
+</div>
+</div>
+</div>
+        <!-- .container -->
+        <a href="#" class="arrow" id="arrow" data-start="opacity: 0;" data-100="opacity: 1;"></a>
+        <script type="text/javascript" src="{{url_for('static', filename='js/scripts.min.js')}}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+$(function(ready){
+var sample = 0;
+var large_width = 1500;
+var div_width = 1440;
+var data_to_use = "{{data}}";
+//console.log(data_to_use);
+//var prefix = String("{{url_for('static', filename='data/");
+//var suffix= String(".csv')}}");
+//var suffix_sample = String("_sample.csv')}}");
+
+redraw();
+$('#check').change(function() {
+  var date = document.getElementById("date_change").value;
+  var kid = document.getElementById("student_change").value;
+    var $check = $(this),
+        $div = $check.parent();
+    if ($check.prop('checked')) {
+        sample = 1;
+        large_width = 956;
+        div_width = 224;
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    } else {
+        sample = 0;
+        large_width = 1500;
+        div_width = 1440;
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    }
+    d3.select("svg").remove();
+    redraw();
+});
+$('#student_change').change(function() {
+  var date = document.getElementById("date_change").value;
+  console.log(date);
+  console.log(String(date));
+  var kid = document.getElementById("student_change").value;
+  var check_value = document.getElementById("check").value;
+    if (check_value) {
+        sample = 1;
+        large_width = 956;
+        div_width = 224;
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    } else {
+        sample = 0;
+        large_width = 1500;
+        div_width = 1440;
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    }
+    d3.select("svg").remove();
+    redraw();
+});
+$('#date_change').change(function() {
+  var date = document.getElementById("date_change").value;
+  var kid = document.getElementById("student_change").value;
+  var check_value = document.getElementById("check").value;
+    if (check_value) {
+        sample = 1;
+        large_width = 956;
+        div_width = 224;
+        //data_to_use = data_to_use.substring(0,13).concat(String(date), "/", String(kid), "_sample.csv");
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    } else {
+        sample = 0;
+        large_width = 1500;
+        div_width = 1440;
+        //data_to_use = data_to_use.substring(0,13).concat(String(date), "/", String(kid), ".csv");
+        //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
+    }
+    d3.select("svg").remove();
+    redraw();
+});
+
+function redraw() {
+
+var parseDate = d3.time.format("%H-%M-%S").parse;
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = large_width - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .rangeRound([height, 0]);
+
+var color = d3.scale.ordinal()
+    .range(['#fddbc7','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4','#313695', '#878787']);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv(data_to_use, function(error, data) {
+  if (error) throw error;
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+
+  data.forEach(function(d) {
+    var y0 = 0;
+    d.date = parseDate(d.date);
+    d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+    d.total = d.ages[d.ages.length - 1].y1;
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.total; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end");
+
+  var date = svg.selectAll(".date")
+      .data(data)
+    .enter().append("g")
+      .attr("class", "g")
+      .attr("transform", function(d) { return "translate(" + x(d.date) + ",0)"; });
+
+  date.selectAll("rect")
+      .data(function(d) { return d.ages; })
+    .enter().append("rect")
+      .attr("width", width / div_width)
+      .attr("y", function(d) { return y(d.y1); })
+      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+      .style("fill", function(d) { return color(d.name); });
+
+  var legend = svg.selectAll(".legend")
+      .data(color.domain().slice().reverse())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
+
+});
+}
+});
+</script>
+    </body>
+</html>
+
+
+
+
+
+

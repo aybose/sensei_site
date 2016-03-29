@@ -1,145 +1,528 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Wildflower Teacher Portal</title>
-        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}" />
-        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.vertical-tabs.css') }}" />
-        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
-        <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildflower Teacher Portal</title>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.vertical-tabs.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
+  <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+      rect.bordered {
+        stroke: #E6E6E6;
+        stroke-width:2px;   
+      }
 
-    
-    <body class="home" id="home">
-    
-        
-        <div class="container">
-            <header class="main-header" id="mainHeader">
-                <nav class="main-menu" id="nav">
-                    <ul>
-                        <li style="width:10%"><a href="/home"><img src="{{ url_for('static', filename='img/aster.jpg') }}"></a></li>
-                        <li class="first" style="padding:12px;margin-top:12px;"><a href="/students">students</a></li>
-<li style="padding:12px;margin-top:12px;"><a href="#">teachers</a></li>
-<li style="padding:12px;margin-top:12px;"><a href="#">materials</a></li>
-<li style="padding:12px;margin-top:12px;"><a href="#">classroom</a></li>
-<li style="padding:12px;margin-top:12px;"><a href="#">notes</a></li>
-<li style="padding:12px;margin-top:12px;"><a href="#">Contact</a></li>
-<li class="last" style="padding:12px;margin-top:12px;"><a href="/logout">logout</a></li>         
-                    </ul>
-                </nav>
+      text.mono {
+        font-size: 9pt;
+        font-family: Consolas, courier;
+        fill: #aaa;
+      }
 
-            </header>
-            <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px;margin-left:160px">
+      text.axis-workweek {
+        fill: #000;
+      }
 
-<div class="l-content" style="margin-top:100px;margin-left:80px">
-        <div class="text-body text-body--purple text-body--spacer" style="width:860px">
-            <div id="tabs">
-            <div class="col-xs-2"> <!-- required for floating -->
-                <!-- Nav tabs -->
-                <ul style="margin-top:-1em">
-                  <li class="active"><a href="#summary">Summary</a></li>
-                  <li><a href="#social">Social</a></li>
-                  <li><a href="#teacher">Teacher</a></li>
-                  <li><a href="#materials">Materials</a></li>
-                  <li><a href="#classroom">Classroom</a></li>
-                  <li><a href="#notes">Notes</a></li>
-                </ul>  
+      text.axis-worktime {
+        fill: #000;
+      }
+    </style>
+</head>
+
+<body class="home" id="home">
+  <div class="container">
+    <header class="main-header" id="mainHeader">
+      <nav class="main-menu" id="nav">
+        <ul>
+          <li style="width:10%"><a href="/home"><img src="{{ url_for('static', filename='img/aster.jpg') }}"></a></li>
+          <li class="first" style="padding:12px;margin-top:12px;"><a href="/students">students</a></li>
+          <li style="padding:12px;margin-top:12px;"><a href="#">teachers</a></li>
+          <li style="padding:12px;margin-top:12px;"><a href="#">materials</a></li>
+          <li style="padding:12px;margin-top:12px;"><a href="#">classroom</a></li>
+          <li style="padding:12px;margin-top:12px;"><a href="#">notes</a></li>
+          <li style="padding:12px;margin-top:12px;"><a href="#">Contact</a></li>
+          <li class="last" style="padding:12px;margin-top:12px;"><a href="/logout">logout</a></li>         
+        </ul>
+      </nav>
+    </header>
+    <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px;margin-left:60px">
+
+    <div class="l-content" style="margin-top:100px;margin-left:80px">
+      <div class="text-body text-body--purple text-body--spacer" style="width:860px">
+        <div id="tabs">
+          <div class="col-xs-2"> <!-- required for floating -->
+            <!-- Nav tabs -->
+            <ul style="margin-top:-1em">
+              <li class="active"><a href="#summary">Summary</a></li>
+              <li><a href="#social">Social</a></li>
+              <li><a href="#teacher">Teacher</a></li>
+              <li><a href="#materials">Materials</a></li>
+              <li><a href="#classroom">Classroom</a></li>
+              <li><a href="#notes">Notes</a></li>
+            </ul>  
+          </div>
+          <div class="col-xs-10">
+            <div id="summary">
+              <h3> This week: </h3>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-1" name="rating-input-1"/>
+                <label for="rating-input-1-1" class="rating-star"></label>
+              </span>
+              Spent time with <a href="students?student=Taj">Taj</a> and <a href="students?student=Penny">Penny</a>
+              <br>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-2" name="rating-input-2"/>
+                <label for="rating-input-1-2" class="rating-star"></label>
+              </span>
+              Worked with <a href="#">Puzzle Words</a>, <a href="#">Sand Tray</a>, and <a href="#">Sandpaper Letters</a>
+              <br>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-3" name="rating-input-3"/>
+                <label for="rating-input-1-3" class="rating-star"></label>
+              </span>
+              Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
+              <br>
+              <br>
+              <h3> Last week: </h3>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-1" name="rating-input-1"/>
+                <label for="rating-input-1-1" class="rating-star"></label>
+              </span>
+              Spent time with <a href="students?student=Taj">Dash</a> and <a href="students?student=Penny">Penny</a>
+              <br>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-2" name="rating-input-2"/>
+                <label for="rating-input-1-2" class="rating-star"></label>
+              </span>
+              Worked with <a href="#">Embroidery</a>, <a href="#">Buttons</a>, and <a href="#">Sandpaper Letters</a>
+              <br>
+              <br>
+              <span class="rating">
+                <input type="radio" class="rating-input"
+                id="rating-input-1-3" name="rating-input-3"/>
+                <label for="rating-input-1-3" class="rating-star"></label>
+              </span>
+              Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
+              <br>
+              <br>
             </div>
-            <div class="col-xs-10">
-                  <div id="summary">
-                    <h3> This week: </h3>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-1" name="rating-input-1"/>
-                            <label for="rating-input-1-1" class="rating-star"></label>
-                    </span>
-                    Spent time with <a href="students?student=Taj">Taj</a> and <a href="students?student=Penny">Penny</a>
-                    <br>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-2" name="rating-input-2"/>
-                            <label for="rating-input-1-2" class="rating-star"></label>
-                    </span>
-                    Worked with <a href="#">Puzzle Words</a>, <a href="#">Sand Tray</a>, and <a href="#">Sandpaper Letters</a>
-                    <br>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-3" name="rating-input-3"/>
-                            <label for="rating-input-1-3" class="rating-star"></label>
-                    </span>
-                    Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
-                    <br>
-                    <br>
-                    <h3> Last week: </h3>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-1" name="rating-input-1"/>
-                            <label for="rating-input-1-1" class="rating-star"></label>
-                    </span>
-                    Spent time with <a href="students?student=Taj">Taj</a> and <a href="students?student=Penny">Penny</a>
-                    <br>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-2" name="rating-input-2"/>
-                            <label for="rating-input-1-2" class="rating-star"></label>
-                    </span>
-                    Worked with <a href="#">Puzzle Words</a>, <a href="#">Sand Tray</a>, and <a href="#">Sandpaper Letters</a>
-                    <br>
-                    <br>
-                    <span class="rating">
-                            <input type="radio" class="rating-input"
-                                    id="rating-input-1-3" name="rating-input-3"/>
-                            <label for="rating-input-1-3" class="rating-star"></label>
-                    </span>
-                    Was in <a href="#">Language</a> and <a href="#">Practical Life</a> areas
-                    <br>
-                    <br>
-                  </div>
-                  <div id="social">
-                    {% if primary_student %}
-                    <h2> Entries for {{primary_student}} </h2>
-                    {% else %}
-                    <h2> Entries for all students </h2>
-                    {% endif %}
-                    <ul>
-                    {% for entry in entries %}
-                    <li>
-                        Date: {{entry.date}}, 
-                        From: {{ entry.school}}
-                        <h3>{{entry.primary_student}} is within {{entry.rsval}} of {{entry.secondary_student}}</h3>
-                    {% else %}
-                    <li>No entries here so far
-                    {% endfor %}
-                    </ul>
-                  </div>
-                  <div id="teacher">Teacher</div>
-                  <div id="materials">Materials</div>
-                  <div id="classroom">Classroom</div>
-                  <div id="notes">Notes</div>
+            <div id="social">
+              <!--  {% if primary_student %}
+              <h2> Entries for {{primary_student}} </h2>
+              {% else %}
+              <h2> Entries for all students </h2>
+              {% endif %}
+              <ul>
+              {% for entry in entries %}
+              <li>
+                  Date: {{entry.date}}, 
+                  From: {{ entry.school}}
+                  <h3>{{entry.primary_student}} is within {{entry.rsval}} of {{entry.secondary_student}}</h3>
+              {% else %}
+              <li>No entries here so far
+                {% endfor %} -->
+
+              </ul>
+              {% if primary_student %}
+              <h4> Social Interaction:</h4>
+              {% else %}
+              <h4> Social Interaction for all students </h4>
+              {% endif %}
+              <div id="chart"></div>
             </div>
-            </div> 
-        </div>
-</div>
-</div>
-        <!-- .container -->
-        <a href="#" class="arrow" id="arrow" data-start="opacity: 0;" data-100="opacity: 1;"></a>
-        <script type="text/javascript" src="{{url_for('static', filename='js/scripts.min.js')}}"></script>
-        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-1.8.2.js')}}"></script>
-        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
-        <script>
-            $('#tabs')
-            .tabs()
-            .addClass('ui-tabs-vertical ui-helper-clearfix');
-        </script>
-    </body>
+            <div id="teacher">Teacher
+              <div id="graph"></div>
+            </div>
+            <!-- <div id ="materials">
+              <div id="dots">
+                <div id="subTitle">materials used by a child over the course of a season</div>
+                <div id="materialScale"></div>  
+              
+                <div id="PLbar"></div>  
+                <div id="PL"></div>
+
+                <div id="Lbar"></div>
+                <div id="L"></div>
+              
+                <div id="Mbar"></div>
+                <div id="M"></div>
+              
+                <div id="Sbar"></div>
+                <div id="S"></div>
+              </div>
+              <div id = "notes"></div>
+              <div id = "materialImage"></div>
+            </div>
+            <div id="classroom">Classroom</div>
+            <div id="notes">Notes</div>
+          </div> -->
+          <div id="classroom">
+            <p> {{primary_student}} in the classroom </p>
+            <img src="{{url_for('static', filename='img/aster_floormap.jpg')}}" alt="Aster" style="width:450px; float:left; position:absolute; z-index:-1;" usemap="#classroom_map">
+            <map name="classroom_map">
+              <area shape="rect" coords="300,200,420,400" alt="right_area" href="javascript:void(0)" onclick="showHeatmap();">
+            </map>
+            <div id="heatmap_video">
+              <video style="height:160px; float:left;margin-top:170px; margin-left:227px; position:absolute;" name="Aster" src="{{url_for('static', filename='img/aster_heatmap2.mov')}}" autoplay="autoplay"></video>
+            </div>
+          </div>
+          <div id="notes">
+            <p> Notes on {{primary_student}}: </p>
+             <table border="1" style="width:100%">
+              <tr>
+                <td style="padding:5px">2/25</td>
+                <td style="padding:5px">Eleanor seemed tired today and she worked with materials that she knows.</td>
+              </tr>
+              <tr>
+                <td style="padding:5px">2/23</td>
+                <td style="padding:5px">Eleanor helped Dash learn how to do the embroidery lesson.</td>
+              </tr>
+            </table>
+            <div id="new_note" style="margin-top:60px">
+             <p>New Note:</p>
+              <textarea rows="3" cols="50" style="margin-top:-100px;margin-left:100px;">
+              </textarea>
+              <form action="/home">
+                <input type="submit" value="save" style="
+                      width: 26%;
+                      margin-top: 10px;
+                      background-color: whitesmoke;
+                      border-color: whitesmoke;
+                  ">
+              </form>
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="{{url_for('static', filename='js/d3.v3.min.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/d3.layout.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/scripts.min.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/jquery-1.8.2.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
+  <script type="text/javascript">
+    var dotCalendar = "{{url_for('static', filename='data/dotcalendar_testdata.csv')}}"
+    function showHeatmap() {
+    alert("showheatmap");
+    div = document.getElementById('heatmap_video');
+    div.style.display = "inline";
+}
+    </script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/dot_calendar.js')}}"></script>
+  <script type="text/javascript">
+    $('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+    var margin = { top: 20, right: 0, bottom: 100, left: 100 },
+    width = 960 - margin.left - margin.right,
+    height = 430 - margin.top - margin.bottom,
+    gridSize = Math.floor(width / 20),
+    legendElementWidth = gridSize*1.33,
+    buckets = 9,
+    //colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"], // alternatively colorbrewer.YlGnBu[9]
+    colors = ["#F8EBFE","#E1D4E7","#CBBED0","#B5A7B9","#9F91A2","#897B8B","#736474","#5D4E5D","#493847"],
+    //colors = ["#F4CAD8","#CAABC1","#A892AF","#756C93","#535381","#424678","#2F386D","#243068","#3A3A3A"]
+    days = ["Lyra", "Jay", "Penny", "Giorgio", "Ije", "Leo", "Yusuf"],
+    times = ["2/24", "2/23", "2/22","2/21", "2/20", "2/19", "2/18", "2/17", "2/16", "2/15", "2/14", "2/13"];
+    datasets = ["{{url_for('static', filename='data/data.tsv')}}", "{{url_for('static', filename='data/data2.tsv')}}"];
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var dayLabels = svg.selectAll(".dayLabel")
+    .data(days)
+    .enter().append("text")
+      .text(function (d) { return d; })
+      .attr("x", 0)
+      .attr("y", function (d, i) { return i * gridSize; })
+      .style("text-anchor", "end")
+      .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+      .attr("class", function (d, i) { return ((i >= 0 && i <= 7) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
+
+var timeLabels = svg.selectAll(".timeLabel")
+    .data(times)
+    .enter().append("text")
+      .text(function(d) { return d; })
+      .attr("x", function(d, i) { return i * gridSize; })
+      .attr("y", 0)
+      .style("text-anchor", "middle")
+      .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+      .attr("class", function(d, i) { return ((i >= 0 && i <= 24) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
+
+var heatmapChart = function(tsvFile) {
+  d3.tsv(tsvFile,
+  function(d) {
+    return {
+      day: +d.day,
+      hour: +d.hour,
+      value: +d.value
+    };
+  },
+  function(error, data) {
+    var colorScale = d3.scale.quantile()
+        .domain([0, buckets - 1, d3.max(data, function (d) { return d.value; })])
+        .range(colors);
+
+    var cards = svg.selectAll(".hour")
+        .data(data, function(d) {return d.day+':'+d.hour;});
+
+    cards.append("title");
+
+    cards.enter().append("rect")
+        .attr("x", function(d) { return (d.hour - 1) * gridSize; })
+        .attr("y", function(d) { return (d.day - 1) * gridSize; })
+        .attr("rx", 4)
+        .attr("ry", 4)
+        .attr("class", "hour bordered")
+        .attr("width", gridSize)
+        .attr("height", gridSize)
+        .style("fill", colors[0]);
+
+    cards.transition().duration(1000)
+        .style("fill", function(d) { return colorScale(d.value); });
+
+    cards.select("title").text(function(d) { return d.value; });
+    
+    cards.exit().remove();
+
+    var legend = svg.selectAll(".legend")
+        .data([0].concat(colorScale.quantiles()), function(d) { return d; });
+
+    legend.enter().append("g")
+        .attr("class", "legend");
+
+    legend.append("rect")
+      .attr("x", function(d, i) { return legendElementWidth * i; })
+      .attr("y", height)
+      .attr("width", legendElementWidth)
+      .attr("height", gridSize / 2)
+      .style("fill", function(d, i) { return colors[i]; });
+
+    legend.append("text")
+      .attr("class", "mono")
+      .text(function(d) { return "≥ " + Math.round(d); })
+      .attr("x", function(d, i) { return legendElementWidth * i; })
+      .attr("y", height + gridSize);
+
+    legend.exit().remove();
+
+  });  
+};
+
+heatmapChart(datasets[1]);
+  </script>
+  <script type="text/javascript">
+
+var m = [180, 160, 0, 160], // top right bottom left
+    w = 1280 - m[1] - m[3], // width
+    h = 800 - m[0] - m[2], // height
+    x = d3.scale.linear().range([0, w]),
+    y = 25, // bar height
+    z = d3.scale.ordinal().range(["steelblue", "#aaa"]); // bar color
+
+var hierarchy = d3.layout.partition()
+    .value(function(d) { return d.size; });
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("top");
+
+var svg2 = d3.select("graph").append("svg:svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+  .append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+svg2.append("svg:rect")
+    .attr("class", "background")
+    .attr("width", w)
+    .attr("height", h)
+    .on("click", up);
+
+svg2.append("svg:g")
+    .attr("class", "x axis");
+
+svg2.append("svg:g")
+    .attr("class", "y axis")
+  .append("svg:line")
+    .attr("y1", "100%");
+
+d3.json("{{url_for('static', filename='data/flare.json')}}", function(root) {
+  //hierarchy.children(root);
+  x.domain([0, root.value]).nice();
+  down(root, 0);
+});
+
+function down(d, i) {
+  if (!d.children || this.__transition__) return;
+  var duration = d3.event && d3.event.altKey ? 7500 : 750,
+      delay = duration / d.children.length;
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg2.selectAll(".enter").attr("class", "exit");
+
+  // Entering nodes immediately obscure the clicked-on bar, so hide it.
+  exit.selectAll("rect").filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Enter the new bars for the clicked-on data.
+  // Per above, entering bars are immediately visible.
+  var enter = bar(d)
+      .attr("transform", stack(i))
+      .style("opacity", 1);
+
+  // Have the text fade-in, even though the bars are visible.
+  // Color the bars as parents; they will fade to children if appropriate.
+  enter.select("text").style("fill-opacity", 1e-6);
+  enter.select("rect").style("fill", z(true));
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg2.selectAll(".x.axis").transition()
+      .duration(duration)
+      .call(xAxis);
+
+  // Transition entering bars to their new position.
+  var enterTransition = enter.transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", function(d, i) { return "translate(0," + y * i * 1.2 + ")"; });
+
+  // Transition entering text.
+  enterTransition.select("text").style("fill-opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", function(d) { return z(!!d.children); });
+
+  // Transition exiting bars to fade out.
+  var exitTransition = exit.transition()
+      .duration(duration)
+      .style("opacity", 1e-6)
+      .remove();
+
+  // Transition exiting bars to the new x-scale.
+  exitTransition.selectAll("rect").attr("width", function(d) { return x(d.value); });
+
+  // Rebind the current node to the background.
+  svg2.select(".background").data([d]).transition().duration(duration * 2); d.index = i;
+}
+
+function up(d) {
+  if (!d.parent || this.__transition__) return;
+  var duration = d3.event && d3.event.altKey ? 7500 : 750,
+      delay = duration / d.children.length;
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg2.selectAll(".enter").attr("class", "exit");
+
+  // Enter the new bars for the clicked-on data's parent.
+  var enter = bar(d.parent)
+      .attr("transform", function(d, i) { return "translate(0," + y * i * 1.2 + ")"; })
+      .style("opacity", 1e-6);
+
+  // Color the bars as appropriate.
+  // Exiting nodes will obscure the parent bar, so hide it.
+  enter.select("rect")
+      .style("fill", function(d) { return z(!!d.children); })
+    .filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.parent.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg2.selectAll(".x.axis").transition()
+      .duration(duration * 2)
+      .call(xAxis);
+
+  // Transition entering bars to fade in over the full duration.
+  var enterTransition = enter.transition()
+      .duration(duration * 2)
+      .style("opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  // When the entering parent rect is done, make it visible!
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .each("end", function(p) { if (p === d) d3.select(this).style("fill-opacity", null); });
+
+  // Transition exiting bars to the parent's position.
+  var exitTransition = exit.selectAll("g").transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", stack(d.index));
+
+  // Transition exiting text to fade out.
+  exitTransition.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Transition exiting rects to the new scale and fade to parent color.
+  exitTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", z(true));
+
+  // Remove exiting nodes when the last child has finished transitioning.
+  exit.transition().duration(duration * 2).remove();
+
+  // Rebind the current parent to the background.
+  svg2.select(".background").data([d.parent]).transition().duration(duration * 2);
+}
+
+// Creates a set of bars for the given data node, at the specified index.
+function bar(d) {
+  var bar = svg2.insert("svg:g", ".y.axis")
+      .attr("class", "enter")
+      .attr("transform", "translate(0,5)")
+    .selectAll("g")
+      .data(d.children)
+    .enter().append("svg:g")
+      .style("cursor", function(d) { return !d.children ? null : "pointer"; })
+      .on("click", down);
+
+  bar.append("svg:text")
+      .attr("x", -6)
+      .attr("y", y / 2)
+      .attr("dy", ".35em")
+      .attr("text-anchor", "end")
+      .text(function(d) { return d.name; });
+
+  bar.append("svg:rect")
+      .attr("width", function(d) { return x(d.value); })
+      .attr("height", y);
+
+  return bar;
+}
+
+// A stateful closure for stacking bars horizontally.
+function stack(i) {
+  var x0 = 0;
+  return function(d) {
+    var tx = "translate(" + x0 + "," + y * i * 1.2 + ")";
+    x0 += x(d.value);
+    return tx;
+  };
+}
+
+    </script>
+</body>
 </html>
 
 
