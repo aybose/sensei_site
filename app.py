@@ -1,56 +1,58 @@
 import os
-import sqlite3
-
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-from contextlib import closing
-
-
-# configuration
-DATABASE = '/tmp/prnet_site.db'
-DEBUG = True
-SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'admin'
-
+from flask_sqlalchemy import SQLAlchemy
+from flask import render_template
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+
+# TODO: select config based on environment
+app.config.from_object('config.BaseConfig')
+app.config['DEBUG'] = True
+
+# Define the database object to be imported by models and controllers
+db = SQLAlchemy(app)
+
+from models import *
 
 # DB METHODS #
 
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+@app.route('/create_initial')
+def create_initial():
+    create_school()
+    create_new_teacher()
+    create_new_user()
+    return 'Created initial school'
 
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
+@app.route('/create_school')
+def create_school():
+    school_name = "Violeta"
+    school = School(school_name)
+    db.session.add(school)
+    db.session.commit()
+    return 'Created school with id=%s!' % school.id
 
-@app.before_request
-def before_request():
-    g.db = connect_db()
+@app.route('/create_new_teacher')
+def create_new_teacher():
+    teacher_name = "mardie"
+    school_name = "Violeta"
+    teacher_obj = Teacher(teacher_name)
+    db.session.add(teacher_obj)
+    school_obj = School.query.filter_by(school=school_name)[0]
+    school_obj.teachers.append(teacher_obj)
+    db.session.commit()
+    return 'Created teacher with name=%s' % teacher_name
 
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
-
-@app.route('/show_entries')
-def show_entries():
-    cur = g.db.execute('select school, date, primary_student, secondary_student, rsval from SocialProximity order by id desc')
-    entries = [dict(school=row[0], date=row[1], primary_student=row[2], secondary_student=row[3], rsval=row[4]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
-
-@app.route('/add_entry', methods=['POST'])
-def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    g.db.execute('insert into SocialProximity (school, date, primary_student, secondary_student, rsval) values (?, ?, ?, ?, ?)',
-                 [request.form['school'], request.form['date'], request.form['primary'], request.form['secondary'], request.form['rsval']])
-    g.db.commit()
-    return show_entries()
+@app.route('/create_new_user')
+def create_new_user():
+    username = "mardie"
+    password = "mardie"
+    if Teacher.query.filter_by(name=username).first() is not None:
+        user_obj = User(username, password)
+        db.session.add(user_obj)
+        db.session.commit()
+    else:
+        return "Not a valid teacher name"
+    return 'Created user with name=%s!' % user_obj.username
 
 # TEMPLATES #
 
@@ -58,16 +60,21 @@ def add_entry():
 def login():
     error = None
     if session.get('logged_in'):
-        return redirect(url_for('home'))
+         return redirect(url_for('home'))
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
+        usernames = User.query.filter_by(username=request.form['username']).first()
+        if usernames is None:
+            error = "Invalid username"
         else:
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('home'))
+            users = User.query.filter_by(username=request.form['username'], password=request.form['password']).first()
+            if users is None:
+                error = "Invalid password"
+            else:
+                session['logged_in'] = True
+                session['username'] = request.form['username']
+                flash('You were logged in')
+                return redirect(url_for('home'))
+        return render_template('index.html', error=error)
     return render_template('index.html', error=error)
 
 @app.route('/logout')
@@ -78,7 +85,9 @@ def logout():
 
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    school_id = Teacher.query.filter_by(name=session['username']).first().school_id
+    school_name = School.query.filter_by(id=school_id).first().school
+    return render_template('home.html', school=school_name)
 
 @app.route("/customize_updates")
 def customize_updates():
@@ -101,7 +110,7 @@ def bar_graph():
     return render_template('bar_graph.html')
 
 @app.route('/real_data')
-def real_data():
+def serve_real_data():
     date = request.values.get('date_change', None)
     student = request.values.get('student_change', None)
     check = request.values.get('check', None)
@@ -138,4 +147,4 @@ def filter():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     print port
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)

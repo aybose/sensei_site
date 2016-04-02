@@ -3,42 +3,63 @@ from app import db
 
 # Helper table for many-to-many relationship
 # questions have different tags
-question_tags = db.Table('question_tags',
-                         db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
-                         db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')))
+# school_students = db.Table('school_students',
+#                          db.Column('school_id', db.Integer, db.ForeignKey('school.id')),
+#                          db.Column('student_id', db.Integer, db.ForeignKey('student.id')))
 
 
-class Question(db.Model):
-    __tablename__ = 'questions'
-
-    id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text)
-    normalized = db.Column(db.Text)
-    answer = db.Column(db.Text)
-    answered_by = db.Column(db.Text)
-    tags = db.relationship('Tag', secondary=question_tags,
-                           backref=db.backref('tags', lazy='dynamic'))
-
-    def __init__(self, question, normalized, answer, answered_by):
-        self.question = question
-        self.normalized = normalized
-        self.answer = answer
-        self.answered_by = answered_by
-
-    def __repr__(self):
-        return '<Question: %s>' % self.question.encode('utf-8')
-
-
-class Tag(db.Model):
-    __tablename__ = 'tags'
+class User(db.Model):
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.Text)
-    questions = db.relationship('Question', secondary=question_tags,
-                                backref=db.backref('questions', lazy='dynamic'))
+    username = db.Column(db.Text)
+    password = db.Column(db.Text)
 
-    def __init__(self, tag):
-        self.tag = tag
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
 
     def __repr__(self):
-        return self.tag
+        return self.username
+
+class School(db.Model):
+    __tablename__ = 'schools'
+
+    id = db.Column(db.Integer, primary_key=True)
+    school = db.Column(db.Text)
+    teachers = db.relationship('Teacher', backref='school',
+                                lazy='dynamic')
+    students = db.relationship('Student', backref='school',
+                                lazy='dynamic')
+
+    def __init__(self, school):
+        self.school = school
+
+    def __repr__(self):
+        return '<School: %s>' % self.school.encode('utf-8')
+
+class Teacher(db.Model):
+    __tablename__ = 'teachers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    school_id = db.Column(db.Integer, db.ForeignKey('schools.id'))
+
+    def __init__(self, name):
+        self.name= name
+
+    def __repr__(self):
+        return self.name
+
+class Student(db.Model):
+    __tablename__ = 'students'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    school_id = db.Column(db.Integer, db.ForeignKey('schools.id'))
+
+    def __init__(self, name):
+        self.name= name
+
+    def __repr__(self):
+        return self.name

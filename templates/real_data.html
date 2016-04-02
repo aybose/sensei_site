@@ -40,7 +40,7 @@
 <div class="l-content" style="margin-top:100px;max-width:750px;padding:0 25px 25px;">
         <div class="text-body text-body--purple text-body--spacer" style="width:860px">
             <h2>Wildflower PrNet Data:</h2>
-  <form id="test" action="#" method="post">
+  <form action="real_data" method="post">
     Date:
     <select id="date_change">
       <option value="3-2-16">3-2-16</option>
@@ -72,6 +72,7 @@
     <div>
         <input type="checkbox" name="check" id="check"/> Sample every second
     </div>
+    <input type="submit" value="Submit">
   </form>
   <div id="graph"></div>
 </div>
@@ -94,7 +95,7 @@ var data_to_use = "{{data}}";
 //var suffix_sample = String("_sample.csv')}}");
 
 redraw();
-$('#check').change(function() {
+/*$('#check').change(function() {
   var date = document.getElementById("date_change").value;
   var kid = document.getElementById("student_change").value;
     var $check = $(this),
@@ -103,11 +104,13 @@ $('#check').change(function() {
         sample = 1;
         large_width = 956;
         div_width = 224;
+        data_to_use = "{{data}}";
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     } else {
         sample = 0;
         large_width = 1500;
         div_width = 1440;
+        data_to_use = "{{data}}";
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     }
     d3.select("svg").remove();
@@ -123,16 +126,18 @@ $('#student_change').change(function() {
         sample = 1;
         large_width = 956;
         div_width = 224;
+        data_to_use = "{{data}}";
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     } else {
         sample = 0;
         large_width = 1500;
         div_width = 1440;
+        data_to_use = "{{data}}";
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     }
     d3.select("svg").remove();
     redraw();
-});
+});*/
 $('#date_change').change(function() {
   var date = document.getElementById("date_change").value;
   var kid = document.getElementById("student_change").value;
@@ -141,12 +146,14 @@ $('#date_change').change(function() {
         sample = 1;
         large_width = 956;
         div_width = 224;
+        data_to_use = "{{data}}";
         //data_to_use = data_to_use.substring(0,13).concat(String(date), "/", String(kid), "_sample.csv");
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     } else {
         sample = 0;
         large_width = 1500;
         div_width = 1440;
+        data_to_use = "{{data}}";
         //data_to_use = data_to_use.substring(0,13).concat(String(date), "/", String(kid), ".csv");
         //data_to_use = prefix.concat(String(date), "/", String(kid), suffix_sample);
     }
