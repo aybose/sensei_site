@@ -3,7 +3,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template
 import re
-from parse_data_to_db import parse_data
+#from parse_data_to_db import parse_data
 
 app = Flask(__name__)
 
@@ -66,9 +66,9 @@ def create_new_students():
     db.session.commit()
     return 'Created student with name=%s!' % student_obj.name
 
-@app.route('/parse_data')
-def parse_data_inputs():
-    parse_data('Wildflower', '03-28-16')
+# @app.route('/parse_data')
+# def parse_data_inputs():
+#     #parse_data('Wildflower', '03-28-16')
 
 # TEMPLATES #
 
