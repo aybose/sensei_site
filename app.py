@@ -2,6 +2,8 @@ import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template
+import re
+from parse_data_to_db import parse_data
 
 app = Flask(__name__)
 
@@ -25,7 +27,7 @@ def create_initial():
 
 @app.route('/create_school')
 def create_school():
-    school_name = "Violeta"
+    school_name = "Wildflower"
     school = School(school_name)
     db.session.add(school)
     db.session.commit()
@@ -33,8 +35,8 @@ def create_school():
 
 @app.route('/create_new_teacher')
 def create_new_teacher():
-    teacher_name = "mardie"
-    school_name = "Violeta"
+    teacher_name = "mary"
+    school_name = "Wildflower"
     teacher_obj = Teacher(teacher_name)
     db.session.add(teacher_obj)
     school_obj = School.query.filter_by(school=school_name)[0]
@@ -44,8 +46,8 @@ def create_new_teacher():
 
 @app.route('/create_new_user')
 def create_new_user():
-    username = "mardie"
-    password = "mardie"
+    username = "mary"
+    password = "mary"
     if Teacher.query.filter_by(name=username).first() is not None:
         user_obj = User(username, password)
         db.session.add(user_obj)
@@ -53,6 +55,20 @@ def create_new_user():
     else:
         return "Not a valid teacher name"
     return 'Created user with name=%s!' % user_obj.username
+
+@app.route('/create_new_students')
+def create_new_students():
+    school_name = "Wildflower"
+    student_obj = Student("Uriah", 0)
+    db.session.add(student_obj)
+    school_obj = School.query.filter_by(school=school_name).first()
+    school_obj.students.append(student_obj)
+    db.session.commit()
+    return 'Created student with name=%s!' % student_obj.name
+
+@app.route('/parse_data')
+def parse_data_inputs():
+    parse_data('Wildflower', '03-28-16')
 
 # TEMPLATES #
 
@@ -136,6 +152,7 @@ def serve_real_data():
 def filter():
     primary_student = request.values.get('student', None)
     if primary_student:
+
         cur = g.db.execute('select school, date, primary_student, secondary_student, rsval from SocialProximity where primary_student = ? order by id desc', [primary_student])
         entries = [dict(school=row[0], date=row[1], primary_student=row[2], secondary_student=row[3], rsval=row[4]) for row in cur.fetchall()]
         return render_template('students.html', entries=entries, primary_student=primary_student)

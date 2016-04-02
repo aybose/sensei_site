@@ -7,6 +7,7 @@ from app import db
 #                          db.Column('school_id', db.Integer, db.ForeignKey('school.id')),
 #                          db.Column('student_id', db.Integer, db.ForeignKey('student.id')))
 
+# User table to handle login
 
 class User(db.Model):
     __tablename__ = "users"
@@ -21,6 +22,8 @@ class User(db.Model):
 
     def __repr__(self):
         return self.username
+
+# Object tables
 
 class School(db.Model):
     __tablename__ = 'schools'
@@ -56,10 +59,37 @@ class Student(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
+    sensor_id = db.Column(db.Integer)
     school_id = db.Column(db.Integer, db.ForeignKey('schools.id'))
 
-    def __init__(self, name):
+    def __init__(self, name, sensor_id):
         self.name= name
+        self.sensor_id = sensor_id
 
     def __repr__(self):
         return self.name
+
+# Data tables
+
+class SocialProximity(db.Model):
+    __tablename__ = 'social_proximity'
+
+    id = db.Column(db.Integer, primary_key=True)
+    school_name = db.Column(db.Text)
+    date = db.Column(db.DateTime)
+    primary_person = db.Column(db.Text)
+    secondary_person = db.Column(db.Text)
+    rsval = db.Column(db.Integer)
+
+    def __init__(self, school_name, date, primary_person, secondary_person, rsval):
+        self.school_name = school_name
+        self.date = date
+        self.primary_person = primary_person
+        self.secondary_person = secondary_person
+        self.rsval = rsval
+
+    def __repr__(self):
+        return 'Row for %s' % self.primary_person
+
+
+
