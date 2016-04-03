@@ -1,0 +1,33 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wildflower Teacher Portal</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}" />
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}">
+        <link href="http://wildflower-teacher-portal.herokuapp.com" rel="canonical">
+
+    </head>
+
+    
+    <body>
+
+            <!-- .main-header -->
+          {% for row in data %}
+          <p>
+              School: {{row.school_name}},
+              Date: {{row.date}}
+              <h3>{{row.primary_person}} is within {{row.rsval}} of {{row.secondary_person}}</h3>
+          </p>
+          {% endfor %} 
+    </body>
+</html>
+
+
+
+
+
+

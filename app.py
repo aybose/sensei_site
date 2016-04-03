@@ -3,7 +3,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template
 import re
-#from parse_data_to_db import parse_data
+from parse_data_to_db import *
 
 app = Flask(__name__)
 
@@ -17,13 +17,6 @@ db = SQLAlchemy(app)
 from models import *
 
 # DB METHODS #
-
-@app.route('/create_initial')
-def create_initial():
-    create_school()
-    create_new_teacher()
-    create_new_user()
-    return 'Created initial school'
 
 @app.route('/create_school')
 def create_school():
@@ -66,9 +59,28 @@ def create_new_students():
     db.session.commit()
     return 'Created student with name=%s!' % student_obj.name
 
-# @app.route('/parse_data')
-# def parse_data_inputs():
-#     #parse_data('Wildflower', '03-28-16')
+@app.route('/view_data')
+def view_data():
+    to_view = ""
+    schools= School.query.order_by(School.id)
+    to_view = to_view + "\n Schools: "
+    for school in schools:
+        to_view = to_view + "\n" + school.school
+    teachers = Teacher.query.order_by(Teacher.school_id)
+    to_view = to_view + ",\n Teachers: "
+    for teacher in teachers:
+        to_view = to_view + "\n" + teacher.name 
+    students = Student.query.order_by(Student.sensor_id)
+    to_view = to_view + ",\n Students: "
+    for student in students:
+        to_view = to_view + "\n" + student.name 
+    return to_view
+
+@app.route('/parse_data')
+def parse_data_inputs():
+    parse_data('Wildflower', '03-28-16')
+    data = SocialProximity.query.all()
+    return render_template('data.html', data=data)
 
 # TEMPLATES #
 
@@ -152,13 +164,10 @@ def serve_real_data():
 def filter():
     primary_student = request.values.get('student', None)
     if primary_student:
-
-        cur = g.db.execute('select school, date, primary_student, secondary_student, rsval from SocialProximity where primary_student = ? order by id desc', [primary_student])
-        entries = [dict(school=row[0], date=row[1], primary_student=row[2], secondary_student=row[3], rsval=row[4]) for row in cur.fetchall()]
+        entries = SocialProximity.query.filter_by(primary_person=primary_student)
         return render_template('students.html', entries=entries, primary_student=primary_student)
     else:
-        cur = g.db.execute('select school, date, primary_student, secondary_student, rsval from SocialProximity order by id desc')
-        entries = [dict(school=row[0], date=row[1], primary_student=row[2], secondary_student=row[3], rsval=row[4]) for row in cur.fetchall()]
+        entries = SocialProximity.query.all()
         return render_template('students.html', entries=entries, primary_student=None)
 
 if __name__ == "__main__":

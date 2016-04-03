@@ -54,7 +54,7 @@
         <div id="tabs">
           <div class="col-xs-2"> <!-- required for floating -->
             <!-- Nav tabs -->
-            <ul style="margin-top:-1em">
+            <ul style="margin-top:-1em;margin-left:-200px">
               <li class="active"><a href="#summary">Summary</a></li>
               <li><a href="#social">Social</a></li>
               <li><a href="#teacher">Teacher</a></li>
@@ -119,24 +119,10 @@
               <br>
             </div>
             <div id="social">
-              <!--  {% if primary_student %}
-              <h2> Entries for {{primary_student}} </h2>
-              {% else %}
-              <h2> Entries for all students </h2>
-              {% endif %}
-              <ul>
-              {% for entry in entries %}
-              <li>
-                  Date: {{entry.date}}, 
-                  From: {{ entry.school}}
-                  <h3>{{entry.primary_student}} is within {{entry.rsval}} of {{entry.secondary_student}}</h3>
-              {% else %}
-              <li>No entries here so far
-                {% endfor %} -->
-
               </ul>
               {% if primary_student %}
               <h4> Social Interaction:</h4>
+              
               {% else %}
               <h4> Social Interaction for all students </h4>
               {% endif %}
