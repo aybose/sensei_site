@@ -76,6 +76,11 @@ def view_data():
         to_view = to_view + "\n" + student.name 
     return to_view
 
+@app.route('/view_sp_data')
+def view_sp_data():
+    data = SocialProximity.query.all()
+    return render_template('data.html', data=data)
+
 @app.route('/parse_data')
 def parse_data_inputs():
     parse_data('Wildflower', '03-28-16')
@@ -121,47 +126,8 @@ def home():
 def customize_updates():
     return render_template('customize_updates.html')
 
-@app.route('/students_demo')
-def students_demo():
-    return render_template('students_demo.html')
-
-@app.route('/matrix_total')
-def matrix_total():
-    return render_template('matrix_total.html')
-
-@app.route('/matrix')
-def matrix():
-    return render_template('matrix.html')
-
-@app.route('/bar_graph')
-def bar_graph():
-    return render_template('bar_graph.html')
-
-@app.route('/real_data')
-def serve_real_data():
-    date = request.values.get('date_change', None)
-    student = request.values.get('student_change', None)
-    check = request.values.get('check', None)
-    if check:
-        if date:
-            if student:
-                file_name = "data/" + date + "/"+ student + "_sample.csv"
-            else:
-                file_name = "data/" + date + "/0_sample.csv"
-        else:
-            file_name = "data/3-2-16/0_sample.csv"
-    else:
-        if date:
-            if student:
-                file_name = "data/" + date + "/"+ student + ".csv"
-            else:
-                file_name = "data/" + date + "/0.csv"
-        else:
-            file_name = "data/3-2-16/0.csv"
-    return render_template('real_data.html', data=url_for('static', filename=file_name))
-
 @app.route('/students')
-def filter():
+def students():
     primary_student = request.values.get('student', None)
     if primary_student:
         entries = SocialProximity.query.filter_by(primary_person=primary_student)
@@ -169,6 +135,24 @@ def filter():
     else:
         entries = SocialProximity.query.all()
         return render_template('students.html', entries=entries, primary_student=None)
+
+@app.route('/teachers')
+def teachers():
+    return render_template('teachers.html')
+
+@app.route('/materials')
+def materials():
+    return render_template('materials.html')
+
+@app.route('/classroom')
+def classroom():
+    return render_template('classroom.html')
+
+@app.route('/notes')
+def notes():
+    return render_template('notes.html')
+
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -31,39 +31,36 @@
                 </nav>
 
             </header>
-            <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px;;margin-left:200px">
+            <img id="homeImg" src="{{ url_for('static', filename='img/wavy-line.png') }}" style="width:860px; margin-top:30px;margin-left:200px">
 
 <div class="l-content" style="margin-top:100px;max-width:750px;padding:0 25px 25px;">
         <div class="text-body text-body--purple text-body--spacer" style="width:860px">
-            <h1> Customize Updates: </h1>
-            <p align="left" style="
-                margin-left: 100px;
-                margin-bottom: -30px;
-            ">less</p>
-            <p align="right" style="
-                margin-top: 5px;
-                margin-right: 100px;
-            ">more</p>
-            students <input type="range" id="myRange" value="90" style="width:80%;margin-bottom:10px;">
-            <br>
-            teachers <input type="range" id="myRange" value="80" style="width:80%;margin-top:20px;margin-bottom:10px;">
-            <br>
-            materials <input type="range" id="myRange" value="50" style="width:80%;margin-top:20px;margin-bottom:10px;">
-            <br>
-            classroom <input type="range" id="myRange" value="25" style="width:80%;margin-top:20px;margin-bottom:10px;">
-            <br>
-            <p style="width:100px"> students to follow: </p>
-            <textarea rows="4" cols="15" style="margin-top:-100px;margin-left:100px;">Eleanor
-                Veylan
-            </textarea>
-            <form action="/home">
-              <input type="submit" value="save" style="
-                    width: 26%;
-                    margin-top: 10px;
-                    background-color: whitesmoke;
-                    border-color: whitesmoke;
-                ">
-            </form>
+            <div id="notes">
+            <p> Notes on {{primary_student}}: </p>
+             <table border="1" style="width:100%">
+              <tr>
+                <td style="padding:5px">2/25</td>
+                <td style="padding:5px">Eleanor seemed tired today and she worked with materials that she knows.</td>
+              </tr>
+              <tr>
+                <td style="padding:5px">2/23</td>
+                <td style="padding:5px">Eleanor helped Dash learn how to do the embroidery lesson.</td>
+              </tr>
+            </table>
+            <div id="new_note" style="margin-top:60px">
+             <p>New Note:</p>
+              <textarea rows="3" cols="50" style="margin-top:-100px;margin-left:100px;">
+              </textarea>
+              <form action="/home">
+                <input type="submit" value="save" style="
+                      width: 26%;
+                      margin-top: 10px;
+                      background-color: whitesmoke;
+                      border-color: whitesmoke;
+                  ">
+              </form>
+            </div>
+          </div>
         </div>
 </div>
 </div>
