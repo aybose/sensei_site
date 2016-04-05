@@ -2,10 +2,6 @@
 <meta charset="utf-8">
 <style>
 
-body {
-  font: 10px sans-serif;
-}
-
 .axis path,
 .axis line {
   fill: none;
@@ -21,10 +17,47 @@ body {
   display: none;
 }
 
+
 </style>
+<style type="text/css">
+      body {
+        margin: 20px; 
+        overflow: hidden; 
+        font-family: "Helvetica Neue", Helvetica; 
+        font-size: 14px;
+      }
+
+      .header {
+        margin-top: 20px;
+        margin-left: 20px;
+        font-size: 36px; 
+        font-weight: 300; 
+        display: block; 
+        z-index: 1; 
+        text-shadow: 0 1px 0 #fff;
+      }
+      .hint {
+        width: 1280px; 
+        right: 0px; 
+        color: rgb(153, 153, 153); 
+        font-size: 12px;
+        padding-bottom: 20px;
+      }
+
+      .hr-style {
+         border: 0;
+         height: 2px;
+         width: 80%;
+         color: #E8E8E8;
+         background-color: #E8E8E8;
+      }
+    </style>
 <body>
-  <h2>Wildflower PrNet Data:</h2>
-  <form id="test" action="#" method="post">
+  <div class="header">
+      Social Interaction for Ivan
+      <div class="hint">Select a date or child to view</div>
+    </div>
+  <form id="test" action="#" method="post" style="margin-left:20px">
     Date:
     <select id="date_change">
       <option value="3-2-16">3-2-16</option>
@@ -36,6 +69,8 @@ body {
       <option value="3-28-16">3-28-16</option>
       <option value="3-30-16">3-30-16</option>
       <option value="3-31-16">3-31-16</option>
+      <option value="4-1-16">4-1-16</option>
+      <option value="4-4-16">4-4-16</option>
     </select>
     <br>
     <br>
@@ -49,7 +84,7 @@ body {
       <option value="5">Riella</option>
       <option value="6">Dash</option>
       <option value="7">Dario</option>
-      <option value="8">Eleanor</option>
+      <option value="8">Ivan</option>
       <option value="9">Bodhi</option>
       <option value="10">Mary</option>
       <option value="11">Erin</option>
@@ -59,7 +94,7 @@ body {
     <div>
         <input type="checkbox" name="check" id="check"/> Sample once a minute
     </div>
-      <a style="font-style:italic" href="total.html">(Switch to Total View)</a>
+    </div>
   </form>
   <div id="graph"></div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -67,7 +102,7 @@ body {
 <script>
 $(function(ready){
 var sample = 0;
-var large_width = 1500;
+var large_width = 1600;
 var div_width = 1440;
 var data_to_use = "data/3-2-16/4.csv";
 
@@ -79,7 +114,7 @@ $('#check').change(function() {
         $div = $check.parent();
     if ($check.prop('checked')) {
         sample = 1;
-        large_width = 956;
+        large_width = 1200;
         div_width = 224;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
@@ -97,7 +132,7 @@ $('#student_change').change(function() {
   var check_value = document.getElementById("check").value;
     if (check_value) {
         sample = 1;
-        large_width = 956;
+        large_width = 1200;
         div_width = 224;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
@@ -115,7 +150,7 @@ $('#date_change').change(function() {
   var check_value = document.getElementById("check").value;
     if (check_value) {
         sample = 1;
-        large_width = 956;
+        large_width = 1200;
         div_width = 224;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
@@ -142,8 +177,7 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
     .rangeRound([height, 0]);
 
-var color = d3.scale.ordinal()
-    .range(['#fddbc7','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4','#313695', '#878787']);
+var color = d3.scale.category20b();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -215,7 +249,7 @@ d3.csv(data_to_use, function(error, data) {
       .style("fill", color);
 
   legend.append("text")
-      .attr("x", width - 24)
+      .attr("x", width - 16)
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")

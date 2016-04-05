@@ -130,11 +130,11 @@ def customize_updates():
 def students():
     primary_student = request.values.get('student', None)
     if primary_student:
-        entries = SocialProximity.query.filter_by(primary_person=primary_student)
-        return render_template('students.html', entries=entries, primary_student=primary_student)
+        #entries = SocialProximity.query.filter_by(primary_person=primary_student)
+        return render_template('students.html', entries=None, primary_student=primary_student)
     else:
-        entries = SocialProximity.query.all()
-        return render_template('students.html', entries=entries, primary_student=None)
+        #entries = SocialProximity.query.all()
+        return render_template('students.html', entries=None, primary_student=None)
 
 @app.route('/teachers')
 def teachers():
@@ -151,6 +151,11 @@ def classroom():
 @app.route('/notes')
 def notes():
     return render_template('notes.html')
+
+@app.route('/students_total')
+def students_total():
+    return render_template('students_total.html')
+
 
 
 

@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>Grid using d3.js</title>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+</head>
+<body>
+<img src="transp.gif" style="position:absolute;">
+<div id="chart" style="position:relative"></div>
+
+<script type="text/javascript" src="grid.js"></script>
+<script type="text/javascript">
+    calendarWeekHour('#chart', 925, 240, true);
+    /**
+*   calendarWeekHour    Setup a week-hour grid: 
+*                           7 Rows (days), 24 Columns (hours)
+*   @param id           div id tag starting with #
+*   @param width        width of the grid in pixels
+*   @param height       height of the grid in pixels
+*   @param square       true/false if you want the height to 
+*                           match the (calculated first) width
+*/
+function calendarWeekHour(id, width, height, square)
+{
+    var calData = randomData(width, height, square);
+    console.log(calData);
+    var grid = d3.select(id).append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("class", "chart");
+
+    var row = grid.selectAll(".row")
+                  .data(calData)
+                .enter().append("svg:g")
+                  .attr("class", "row");
+
+    var col = row.selectAll(".cell")
+                 .data(function (d) { return d; })
+                .enter().append("svg:rect")
+                 .attr("class", "cell")
+                 .attr("x", function(d) { return d.x; })
+                 .attr("y", function(d) { return d.y; })
+                 .attr("width", function(d) { return d.width; })
+                 .attr("height", function(d) { return d.height; })
+                 .attr("fill", function(d) { return d.color; })
+                 .on('mouseover', function() {
+                    d3.select(this)
+                        .style('fill', '#0F0');
+                 })
+                 .on('mouseout', function() {
+                    d3.select(this)
+                        .style('fill', 'transparent');
+                 })
+                 .on('click', function() {
+                    console.log(d3.select(this));
+                 })
+                 .style("opacity", "0.25")
+                 .style("stroke", '#555')
+                 .style("stroke-width", '0.05px');
+}
+
+////////////////////////////////////////////////////////////////////////
+
+/**
+*   randomData()        returns an array: [
+                                            [{id:value, ...}],
+                                            [{id:value, ...}],
+                                            [...],...,
+                                            ];
+                        ~ [
+                            [hour1, hour2, hour3, ...],
+                            [hour1, hour2, hour3, ...]
+                          ]
+
+*/
+function randomData(gridWidth, gridHeight, square)
+{
+    var data = new Array();
+    var gridItemWidth = gridWidth / 120;
+    var gridItemHeight = (square) ? gridItemWidth : gridHeight / 35;
+    var startX = gridItemWidth / 2;
+    var startY = gridItemHeight / 2;
+    var stepX = gridItemWidth;
+    var stepY = gridItemHeight;
+    var xpos = startX;
+    var ypos = startY;
+    var newValue = 0;
+    var count = 0;
+    var colors = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'];
+    var color = colors[0];
+
+    for (var index_a = 0; index_a < 35; index_a++)
+    {
+        data.push(new Array());
+        for (var index_b = 0; index_b < 120; index_b++)
+        {
+        	color = colors[Math.floor(Math.random()*colors.length)];
+            newValue = Math.round(Math.random() * (100 - 1) + 1);
+            data[index_a].push({ 
+                                time: index_b, 
+                                value: newValue,
+                                width: gridItemWidth,
+                                height: gridItemHeight,
+                                x: xpos,
+                                y: ypos,
+                                count: count,
+                                color:color
+                            });
+            xpos += stepX;
+            count += 1;
+        }
+        xpos = startX;
+        ypos += stepY;
+    }
+    return data;
+}
+
+</script>
+</body>
+</html>
