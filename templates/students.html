@@ -119,8 +119,49 @@
               <br>
             </div>
             <div id="social">
-              </ul>
-              <img src="{{ url_for('static', filename='img/social.png') }}" style="width:1100px">
+              <div class="header">
+                        <h2 style="margin-bottom:10px">Social Interaction for Ivan</h2>
+                      
+                    <form id="test" action="#" method="post">
+                      Date:
+                      <select id="date_change">
+                        <option value="3-2-16">3-2-16</option>
+                        <option value="3-4-16">3-4-16</option>
+                        <option value="3-7-16">3-7-16</option>
+                        <option value="3-8-16">3-8-16</option>
+                        <option value="3-9-16">3-9-16</option>
+                        <option value="3-10-16">3-10-16</option>
+                        <option value="3-28-16">3-28-16</option>
+                        <option value="3-30-16">3-30-16</option>
+                        <option value="3-31-16">3-31-16</option>
+                        <option value="4-1-16">4-1-16</option>
+                        <option value="4-4-16">4-4-16</option>
+                      </select>
+                      <br>
+                      <br>
+                      Person:
+                      <select id="student_change">
+                        <option value="0">Uriah</option>
+                        <option value="1">Veylan</option>
+                        <option value="2">Sofi</option>
+                        <option value="3">Neve</option>
+                        <option value="4">Elliot</option>
+                        <option value="5">Riella</option>
+                        <option value="6">Dash</option>
+                        <option value="7">Dario</option>
+                        <option value="8">Ivan</option>
+                        <option value="9">Bodhi</option>
+                        <option value="10">Mary</option>
+                        <option value="11">Erin</option>
+                      </select>
+                      <br>
+                      <br>
+                      <div>
+                          <input type="checkbox" name="check" id="check"/> Sample once a minute
+                      </div>
+                      </div>
+                    </form>
+                    <img src="{{ url_for('static', filename='img/social_graph.png') }}" style="width:1100px">
             </div>
             <div id="teacher">Teacher
               <div id="graph"></div>
@@ -194,6 +235,7 @@
   <script type="text/javascript" src="{{url_for('static', filename='js/jquery-1.8.2.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
   <script type="text/javascript">
+      $('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
     var dotCalendar = "{{url_for('static', filename='data/dotcalendar_testdata.csv')}}"
     function showHeatmap() {
     alert("showheatmap");
@@ -203,7 +245,6 @@
     </script>
   <script type="text/javascript" src="{{url_for('static', filename='js/dot_calendar.js')}}"></script>
   <script type="text/javascript">
-    $('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
     var margin = { top: 20, right: 0, bottom: 100, left: 100 },
     width = 960 - margin.left - margin.right,
     height = 430 - margin.top - margin.bottom,
