@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<title>Sankey Chart</title>
+
+	<!-- D3.js -->	
+    <script src="http://d3js.org/d3.v3.js"></script>
+	<script src="d3.stretched.chord.js"></script>
+	<script src="d3.layout.chord.sort.js"></script>
+	
+	<!-- jQuery -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<!-- Open Sans & CSS -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400,300' rel='stylesheet' type='text/css'>
+	  <style>
+		body {
+		  font-family: 'Open Sans', sans-serif;
+		  font-size: 12px;
+		  font-weight: 400;
+		  color: #525252;
+		  text-align: center;
+		}	
+		
+		line {
+		  stroke: #000;
+		  stroke-width: 1.px;
+		}
+
+		text {
+		  font-size: 8px;
+		}
+
+		.titles{
+		  font-size: 10px;
+		}
+
+		path.chord {
+		  fill-opacity: .80;
+		}
+		.header {
+				margin-top: 20px;
+				margin-left: 0px;
+				font-size: 42px; 
+				font-weight: 300; 
+				display: block; 
+				z-index: 1; 
+				text-shadow: 0 1px 0 #fff;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica; 
+			}
+			.hint {
+				width: 1280px; 
+				right: 0px; 
+				color: rgb(153, 153, 153); 
+				font-size: 20px;
+				padding-bottom: 20px;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica; 
+			}
+
+			.hr-style {
+			   border: 0;
+			   height: 2px;
+			   width: 80%;
+			   color: #E8E8E8;
+			   background-color: #E8E8E8;
+			   text-align: left;
+			   font-family: "Helvetica Neue", Helvetica; 
+			}
+	  </style>
+  </head>
+  <body>
+  	<div class="header" style="margin-left:50px">
+			Clustered Interactions
+			<div class="hint">Hover over a name to see who this child interacted with. </div>
+		</div>
+
+    <div id="chart"></div>	
+    <script src="script.js"></script>
+	
+  </body>
+</html>

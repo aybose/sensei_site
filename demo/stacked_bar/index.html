@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>Bar Chart</title>
 <meta charset="utf-8">
 <style>
 
@@ -51,12 +52,36 @@
          color: #E8E8E8;
          background-color: #E8E8E8;
       }
+      .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
     </style>
 <body>
   <div class="header">
       Social Interaction for Ivan
       <div class="hint">Select a date or child to view</div>
     </div>
+    
   <form id="test" action="#" method="post" style="margin-left:20px">
     Date:
     <select id="date_change">
@@ -76,18 +101,18 @@
     <br>
     Person:
     <select id="student_change">
-      <option value="0">Uriah</option>
-      <option value="1">Veylan</option>
-      <option value="2">Sofi</option>
-      <option value="3">Neve</option>
-      <option value="4">Elliot</option>
-      <option value="5">Riella</option>
-      <option value="6">Dash</option>
-      <option value="7">Dario</option>
+      <option value="0">Alice</option>
+      <option value="1">Bob</option>
+      <option value="2">Chris</option>
+      <option value="3">Dave</option>
+      <option value="4">Eliza</option>
+      <option value="5">Fred</option>
+      <option value="6">George</option>
+      <option value="7">Helen</option>
       <option value="8">Ivan</option>
-      <option value="9">Bodhi</option>
-      <option value="10">Mary</option>
-      <option value="11">Erin</option>
+      <option value="9">Kelly</option>
+      <option value="10">Linda</option>
+      <option value="11">Meg</option>
     </select>
     <br>
     <br>
@@ -97,9 +122,11 @@
     </div>
   </form>
   <div id="graph"></div>
+  <div id="name"></div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
+
 $(function(ready){
 var sample = 0;
 var large_width = 1600;
@@ -114,8 +141,8 @@ $('#check').change(function() {
         $div = $check.parent();
     if ($check.prop('checked')) {
         sample = 1;
-        large_width = 1200;
-        div_width = 224;
+        large_width = 1000;
+        div_width = 215;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
         sample = 0;
@@ -132,8 +159,8 @@ $('#student_change').change(function() {
   var check_value = document.getElementById("check").value;
     if (check_value) {
         sample = 1;
-        large_width = 1200;
-        div_width = 224;
+        large_width = 1000;
+        div_width = 215;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
         sample = 0;
@@ -150,8 +177,8 @@ $('#date_change').change(function() {
   var check_value = document.getElementById("check").value;
     if (check_value) {
         sample = 1;
-        large_width = 1200;
-        div_width = 224;
+        large_width = 1000;
+        div_width = 215;
         data_to_use = "data/" + date + "/"+ kid + "_sample.csv";
     } else {
         sample = 0;
@@ -177,8 +204,7 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
     .rangeRound([height, 0]);
 
-var color = d3.scale.ordinal()
-    .range(["#ffffff","#ffffff", "#ffffff","#ffffff", "#ffffff","#ffffff", "#000000","#ffffff","#ffffff", "#ffffff","#ffffff",  "#ffffff","#ffffff", "#ffffff","#ffffff", "#ffffff","#ffffff", "#ffffff","#ffffff", "#ffffff"]);
+var color = d3.scale.category20c();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -188,7 +214,7 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#graph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -223,6 +249,9 @@ d3.csv(data_to_use, function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end");
 
+  svg.append("g")
+    
+
   var date = svg.selectAll(".date")
       .data(data)
     .enter().append("g")
@@ -235,7 +264,16 @@ d3.csv(data_to_use, function(error, data) {
       .attr("width", width / div_width)
       .attr("y", function(d) { return y(d.y1); })
       .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-      .style("fill", function(d) { return color(d.name); });
+      .style("fill", function(d) { return color(d.name); })
+      .on("mouseover", function(d) {
+        var div = document.getElementById('name');
+        div.innerHTML = d.name;
+
+      })
+    .on("mouseout", function() {
+         var div = document.getElementById('name');
+        div.innerHTML = '';
+    });
 
   var legend = svg.selectAll(".legend")
       .data(color.domain().slice().reverse())

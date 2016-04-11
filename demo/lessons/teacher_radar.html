@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+		<title>Radar Chart</title>
+
+		<!-- Google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+		<!-- D3.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+		
+		<style>
+			body {
+				font-family: 'Open Sans', sans-serif;
+				font-size: 11px;
+				font-weight: 300;
+				fill: #242424;
+				text-align: center;
+				text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+				cursor: default;
+			}
+			
+			.legend {
+				font-family: 'Raleway', sans-serif;
+				fill: #333333;
+			}
+			
+			.tooltip {
+				fill: #333333;
+			}
+			.header {
+				margin-top: 20px;
+				margin-left: 0px;
+				font-size: 42px; 
+				font-weight: 300; 
+				display: block; 
+				z-index: 1; 
+				text-shadow: 0 1px 0 #fff;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica; 
+			}
+			.hint {
+				width: 1280px; 
+				right: 0px; 
+				color: rgb(153, 153, 153); 
+				font-size: 20px;
+				padding-bottom: 20px;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica; 
+			}
+
+			.hr-style {
+			   border: 0;
+			   height: 2px;
+			   width: 80%;
+			   color: #E8E8E8;
+			   background-color: #E8E8E8;
+			   text-align: left;
+			   font-family: "Helvetica Neue", Helvetica; 
+			}
+		</style>
+	
+	</head>
+	<body>
+		<div class="header" style="margin-left:50px">
+			Teacher Interactions
+			<div class="hint">Hover over a point to see the amount of time spend with a child.</div>
+		</div>
+		<div class="radarChart" style="position:absolute;"></div>
+		<table style="margin-left:550px;position:relative;">
+		  <tr>
+		    <td><img src="red.png" style="width:15px"></td>
+		    <td>Alyssa</td>
+		  </tr>
+		  <tr>
+		    <td><img src="blue.png" style="width:15px"></td>
+		    <td>Ben</td>
+		  </tr>
+		</table>
+
+		<script src="radarChart.js"></script>	
+		<script>
+			////////////////////////////////////////////////////////////// 
+			//////////////////////// Set-Up ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var margin = {top: 100, right: 100, bottom: 100, left: 100},
+				width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+				height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+					
+			////////////////////////////////////////////////////////////// 
+			////////////////////////// Data ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var data = [
+					  [{axis:"Alice",value:0.000619525601566},{axis:"Bob",value:0.0818103328962},{axis:"Chris",value:0.0807755933276},{axis:"Dave",value:0.0716211139598},{axis:"Eliza",value:0.0433206572244},{axis:"Fred",value:0.0239769589202},{axis:"George",value:0.166191037969},{axis:"Helen",value:0.0158638098188},{axis:"Ivan",value:0.176261624343},{axis:"Jack",value:0.00554277692465},{axis:"Kelly",value:0.0},{axis:"Linda",value:0.0290188428053},{axis:"Meg",value:0.0147763446671},{axis:"Noah",value:0.152772377067},{axis:"Oscar",value:0.128782236751},{axis:"Peter",value:0.00866676772403},{axis:"Quinn",value:0.0}],
+					  [{axis:"Alice",value:0.00179018097994},{axis:"Bob",value:0.147751238413},{axis:"Chris",value:0.103474912943},{axis:"Dave",value:0.0736487812056},{axis:"Eliza",value:0.0490705772721},{axis:"Fred",value:0.088613958507},{axis:"George",value:0.154856785522},{axis:"Helen",value:0.0156702143313},{axis:"Ivan",value:0.0888224042376},{axis:"Jack",value:0.0625888959733},{axis:"Kelly",value:0.0218868017068},{axis:"Linda",value:0.0},{axis:"Meg",value:0.0146831624896},{axis:"Noah",value:0.13935823238},{axis:"Oscar",value:0.0312545980676},{axis:"Peter",value:0.00652925597136},{axis:"Quinn",value:0.0}]
+					];
+			////////////////////////////////////////////////////////////// 
+			//////////////////// Draw the Chart ////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var color = d3.scale.ordinal()
+				.range(['#d7191c','#2b83ba']);
+				
+			var radarChartOptions = {
+			  w: width,
+			  h: height,
+			  margin: margin,
+			  maxValue: 0.16,
+			  levels: 5,
+			  roundStrokes: true,
+			  color: color
+			};
+			//Call function to draw the Radar chart
+			RadarChart(".radarChart", data, radarChartOptions);
+		</script>
+	</body>
+</html>
