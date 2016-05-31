@@ -1,4 +1,8 @@
 # Sensei: Sensing Educational Interaction
+## Visualizations
+
+Currently, the visualizations are demos and access static data files. See `/demo` for the code + how to run them.
+
 ## Web Application 
 
 If you're new to Flask and SQLAlchemy:
